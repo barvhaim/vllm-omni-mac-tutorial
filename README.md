@@ -49,7 +49,7 @@ Also see [`docs/GLOSSARY.md`](docs/GLOSSARY.md).
 ## Start
 
 ```bash
-git clone https://github.com/njs2017/vllm-omni-mac-tutorial.git
+git clone https://github.com/barvhaim/vllm-omni-mac-tutorial.git
 cd vllm-omni-mac-tutorial
 ./scripts/bootstrap.sh
 source .venv/bin/activate
