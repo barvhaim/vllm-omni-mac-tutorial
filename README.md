@@ -1,27 +1,52 @@
-# vLLM-Omni on a Mac: an executable tutorial
+# vLLM-Omni from scratch: a Mac-executable course
 
-A beginner-friendly, notebook-based course for learning the architecture behind **vLLM-Omni** on Apple Silicon or Intel Macs.
+A complete beginner-to-practical notebook course for understanding **vLLM-Omni**, its architecture, runtime, APIs, performance model, and production deployment.
 
 > [!IMPORTANT]
-> The official vLLM-Omni runtime targets Linux accelerator environments and does not natively run on macOS. This repository teaches its core ideas with small, executable simulations on macOS: autoregressive decoding, KV caches, diffusion, stage graphs, disaggregation, connectors, batching, and serving. The final notebook generates version-matched Linux deployment commands for the real runtime, but does not pretend that CUDA-only code runs on a Mac.
+> Regular vLLM can run on Apple Silicon through **vLLM-Metal**. The complete vLLM-Omni runtime is not generally available as an equivalent Mac/Metal stack. Every core lesson here executes on a Mac through faithful lightweight simulations, while clearly marked Linux GPU labs map those ideas to the official runtime.
 
-## What you will build
+## What you will learn
 
-1. A mental model of multimodal and any-to-any inference.
-2. A toy autoregressive decoder with a visible KV-cache analogue.
-3. A 2D diffusion/denoising process.
-4. A configurable Thinker -> Talker -> Vocoder stage graph.
-5. A discrete-event serving simulator showing bottlenecks and independent stage scaling.
-6. A deployment planner for moving from a Mac prototype to real Linux GPUs.
+- LLM inference and serving fundamentals
+- multimodal input versus any-to-any generation
+- prefill, decode, KV cache, PagedAttention, and continuous batching
+- Thinker/Talker autoregressive pipelines
+- diffusion, latents, CFG, VAE, image/video/audio generation
+- stage graphs, stage processors, and `OmniConnector`
+- orchestration, request lifecycle, streaming, and outputs
+- disaggregation versus within-stage parallelism
+- per-stage scheduling, batching, scaling, and observability
+- OpenAI-style media APIs
+- model integration and production deployment
 
-## Mac requirements
+## Curriculum
+
+| # | Notebook | Outcome |
+|---:|---|---|
+| 00 | Course orientation | Understand model/runtime/server/application boundaries |
+| 01 | From LLM to Omni | Recognize any-to-any architecture shapes |
+| 02 | vLLM foundations | Understand what AR stages inherit from vLLM |
+| 03 | AR stages | Trace Thinker -> Talker |
+| 04 | Diffusion stages | Understand DiT, CFG, latents, and VAE |
+| 05 | Stage graphs | Read the core vLLM-Omni abstraction |
+| 06 | Request lifecycle | Follow a request through the orchestrator |
+| 07 | Connectors | Understand disaggregation and transport |
+| 08 | Scheduling/scaling | Find and scale stage bottlenecks |
+| 09 | APIs/streaming | Use offline and OpenAI-style interfaces conceptually |
+| 10 | Benchmarking | Measure performance without misleading yourself |
+| 11 | Adding a model | Understand the complete integration surface |
+| 12 | Deployment | Move from a Mac client to Linux serving |
+
+Also see [`docs/GLOSSARY.md`](docs/GLOSSARY.md).
+
+## Requirements
 
 - macOS 13+
-- Python 3.11 or 3.12
 - Apple Silicon or Intel Mac
-- No GPU is required
+- Python 3.11 or 3.12
+- no GPU required for the course notebooks
 
-## Quickstart
+## Start
 
 ```bash
 git clone https://github.com/njs2017/vllm-omni-mac-tutorial.git
@@ -31,34 +56,27 @@ source .venv/bin/activate
 jupyter lab
 ```
 
-Open notebooks in numeric order. To execute the complete course headlessly:
+Run all tests and notebooks:
 
 ```bash
 make test
 ```
 
-## Course map
+## Learning method
 
-| Notebook | Topic | Artifact |
-|---|---|---|
-| `00` | Why vLLM-Omni exists | Architecture vocabulary |
-| `01` | AR decoding and cache reuse | Tiny token generator |
-| `02` | Diffusion versus AR | Animated denoising trajectory |
-| `03` | Stage graphs and connectors | Thinker/Talker/Vocoder pipeline |
-| `04` | Serving and scaling | Queueing and utilization experiment |
-| `05` | Mac-to-Linux path | Version-matched deployment plan |
+For every module:
 
-## What this repository is not
+1. Read the mental model.
+2. Execute the toy implementation.
+3. Complete the checkpoint or exercise.
+4. Follow the source-lab path in the official repository.
+5. Run Linux GPU labs only on supported infrastructure.
 
-- It is not a macOS port of vLLM or vLLM-Omni.
-- Toy models do not reproduce production model quality or kernels.
-- Simulated timings are explanatory, not official benchmark results.
+## Primary sources
 
-## References
-
-- [vLLM-Omni documentation](https://docs.vllm.ai/projects/vllm-omni/en/latest/)
+- [Official documentation](https://docs.vllm.ai/projects/vllm-omni/en/latest/)
 - [Official repository](https://github.com/vllm-project/vllm-omni)
 - [Architecture paper](https://arxiv.org/abs/2602.02204)
-- [Architecture overview](https://docs.vllm.ai/projects/vllm-omni/en/latest/design/architecture_overview/)
+- [vLLM-Metal](https://docs.vllm.ai/projects/vllm-metal/en/latest/)
 
 Apache-2.0 licensed.
