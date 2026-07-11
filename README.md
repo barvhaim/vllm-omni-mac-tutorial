@@ -44,6 +44,7 @@ Also see [`docs/GLOSSARY.md`](docs/GLOSSARY.md).
 - macOS 13+
 - Apple Silicon or Intel Mac
 - Python 3.11 or 3.12
+- [uv](https://docs.astral.sh/uv/) package manager
 - no GPU required for the course notebooks
 
 ## Start
@@ -51,9 +52,8 @@ Also see [`docs/GLOSSARY.md`](docs/GLOSSARY.md).
 ```bash
 git clone https://github.com/barvhaim/vllm-omni-mac-tutorial.git
 cd vllm-omni-mac-tutorial
-./scripts/bootstrap.sh
-source .venv/bin/activate
-jupyter lab
+./scripts/bootstrap.sh   # runs `uv sync`
+uv run jupyter lab
 ```
 
 Run all tests and notebooks:

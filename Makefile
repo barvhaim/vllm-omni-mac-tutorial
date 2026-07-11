@@ -1,7 +1,7 @@
 .PHONY: test notebooks
 notebooks:
-	python scripts/execute_notebooks.py
+	uv run python scripts/execute_notebooks.py
 
 test:
-	pytest -q
-	python scripts/execute_notebooks.py
+	uv run pytest -q
+	uv run python scripts/execute_notebooks.py
