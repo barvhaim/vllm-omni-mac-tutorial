@@ -9,10 +9,13 @@
 - **Disaggregation:** placing and scaling pipeline stages independently.
 - **JCT:** job completion time from request arrival to final output.
 - **KV cache:** stored attention keys/values from already processed tokens.
+- **Mooncake:** network connector (TCP/RDMA) used for multi-node stage transport.
 - **OmniRequestOutput:** public envelope for heterogeneous request results.
 - **PagedAttention:** block-oriented KV-cache memory management used by vLLM.
 - **Prefill:** initial prompt processing that creates attention state.
+- **RTF:** real-time factor, generation time divided by audio duration (< 1 is faster than real time).
 - **Stage graph:** nodes are model stages; edges transform and route intermediate data.
+- **TTFT:** time to first token/output; dominates perceived latency.
 - **Talker:** AR component that may generate audio codec tokens.
 - **Thinker:** comprehension/reasoning AR component in Thinker-Talker models.
 - **VAE:** encoder/decoder commonly mapping images or videos to/from latent space.

@@ -6,6 +6,10 @@ class Stage:
     name: str
     kind: str
     fn: Callable[[Any], Any]
+    # Relative time one request spends in this stage. Defaults to 1.0 so existing
+    # callers are unaffected; notebook 08 uses it to feed the PipelineSimulator and
+    # show the Talker as the bottleneck (it decodes far more tokens than the Thinker).
+    service_time: float = 1.0
     def run(self, value: Any) -> Any:
         return self.fn(value)
 
@@ -32,9 +36,21 @@ class StageGraph:
             if index < len(self.stages)-1:
                 value=self.connector.transfer(value)
         return value, trace
+    def stage_specs(self, replicas: dict[str, int] | None = None) -> list["StageSpec"]:
+        """Project this graph onto serving.StageSpec objects for the simulator.
+
+        Each stage's `service_time` becomes the simulator's service time; pass
+        `replicas` to scale specific stages (e.g. {"talker": 3}).
+        """
+        from .serving import StageSpec
+        replicas = replicas or {}
+        return [StageSpec(s.name, s.service_time, replicas.get(s.name, 1)) for s in self.stages]
 
 def build_voice_pipeline() -> StageGraph:
-    thinker=Stage("thinker","AR",lambda prompt:{"text":f"Answer: {prompt}","hidden":[1,2,3]})
-    talker=Stage("talker","AR",lambda x:{"text":x["text"],"audio_codes":[7,4,7,4]})
-    vocoder=Stage("vocoder","codec",lambda x:{"text":x["text"],"waveform_samples":len(x["audio_codes"])*2400})
+    # service_time reflects the paper's finding that the Talker dominates latency:
+    # it runs many more decode iterations (~545 audio vs ~150 text tokens) than the
+    # Thinker, while Code2Wav is cheap. The fn outputs are unchanged.
+    thinker=Stage("thinker","AR",lambda prompt:{"text":f"Answer: {prompt}","hidden":[1,2,3]},service_time=1.0)
+    talker=Stage("talker","AR",lambda x:{"text":x["text"],"audio_codes":[7,4,7,4]},service_time=3.5)
+    vocoder=Stage("vocoder","codec",lambda x:{"text":x["text"],"waveform_samples":len(x["audio_codes"])*2400},service_time=0.5)
     return StageGraph([thinker,talker,vocoder])

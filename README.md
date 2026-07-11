@@ -64,13 +64,21 @@ make test
 
 ## Learning method
 
-For every module:
+Every notebook follows the same spine:
 
-1. Read the mental model.
-2. Execute the toy implementation.
-3. Complete the checkpoint or exercise.
-4. Follow the source-lab path in the official repository.
-5. Run Linux GPU labs only on supported infrastructure.
+1. Read the mental model (prose + a diagram grounded in the real architecture).
+2. Execute the simulation — it computes real numbers from the `omni_tutorial` primitives.
+3. Read the plot (KV fragmentation, batching occupancy, queueing curves, denoising, connector overhead).
+4. Do the exercise, then check the worked solution cell.
+5. Read the **Linux GPU lab** cell — the verbatim official command, shown as text and never run on Mac.
+6. Follow the source-lab pointer into the official repository.
+
+Executed cells are pure-Python/numpy simulations (no `torch`, no GPU, no `vllm` import), so the
+course runs on any Mac. The real `vllm serve --omni` runtime is CUDA-only and appears only in the
+non-executed Linux GPU lab cells.
+
+The notebooks are generated from [`scripts/build_notebooks.py`](scripts/build_notebooks.py) — edit
+that source and re-run `uv run python scripts/build_notebooks.py` to regenerate them.
 
 ## Primary sources
 
